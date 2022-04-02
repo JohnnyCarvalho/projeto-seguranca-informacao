@@ -9,7 +9,7 @@ Em um terminal acesse o diretório em que o projeto for clonado e:
   npm start
 
 Em outro terminal acesse o diretório em que o projeto for clonado e:
-  cs Frontend
+  cd Frontend
   npm install
   npm run dev
   
