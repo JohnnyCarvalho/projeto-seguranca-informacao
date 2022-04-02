@@ -1,5 +1,7 @@
 # Projeto para a aula de Segurança de Informação da PUC-PR - Curso Engenharia de Software
 
+Requisitos: NodeJS
+
 Para executar o projeto siga os seguintes passos:
 
 Em um terminal acesse o diretório em que o projeto for clonado e:
