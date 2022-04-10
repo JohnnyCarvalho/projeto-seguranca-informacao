@@ -33,16 +33,16 @@ Em outro terminal de comando acesse o diretório em que o projeto for clonado e:
 ```
 
 ## RELATÓRIO
-###ITEM 01 
+### ITEM 01 
 Desenvolva um programa que implemente uma aplicação que possua funcionalidades: cadastrar e autenticar usuário. Um usuário possui os seguintes atributos: nome(string de 4 caracteres) e senha (string de 4 caracteres). O cadastro dos usuários deve ser armazenado em um arquivo txt. A aplicação deve utilizar o algorítmo MD5 para realizar a função de hash para armazenamento da senha.
 
-###CONSIDERAÇÕES: 
+### CONSIDERAÇÕES: 
 A aplicação foi desenvolvida utilizando uma API em NodeJS como backend (pasta Server) e o frontend em React, utilizando o framework next.js (pasta Frontend). A aplicação armazena os dados dos usuários no arquivo db.json (dentro da pasta Server) e todas as senhas são armazenadas como hashs, através da aplicação do algorítmo MD5, conforme requisitado no enunciado.
 
-###ITEM 02 
+### ITEM 02 
 Pesquise um algorítmo/código fonte de força bruta para MD5 e processe o arquivo que contém as senhas armazenadas. Compute o tempo para realizar a quebra de 04 usuários.
 
-###CONSIDERAÇÕES: 
+### CONSIDERAÇÕES: 
 Desenvolvemos nosso próprio algorítimo de força bruta para simular duas situações: 
 
 a) Situação em que o atacante está tentando descobrir credenciais válidas em um website (no caso a própria aplicação desenvolvida). Neste cenário utilizamos manipulação do DOM através da biblioteca puppeteer (que simula a utilização do browser), desenvolvendo um algoritmo para testar possíveis nomes de usuário e, quando encontrado um usuário válido, testar diferentes combinações de senha.
@@ -50,10 +50,10 @@ O script criado foi executado durante cerca de 8 horas (Disponível no youTube h
 
 b) O segundo cenário, proposto no enunciado do exercício, simula um atacante que já possui acesso à base de dados e utiliza de força bruta para quebrar as senhas salvas no banco de dados. O script demorou cerca de 4 minutos para quebrar as senhas dos cinco usuários existentes na base de dados (Disponível no YouTube https://youtu.be/9yj44DNsKxE).
 
-###ITEM 03 
+### ITEM 03 
 Implemente uma solução para reduzir a possibilidade de sucesso de um ataque de força bruta no programa desenvolvido no item 01.
 
-###CONSIDERAÇÕES: 
+### CONSIDERAÇÕES: 
 Para reduzir a possibilidade de sucesso de um ataque de força bruta nós criamos uma propriedade no arquivo de configuração (config.json na pasta raiz do projeto) chamada "securityActive" que recebe um parâmetro booleano. Se true os requisitos de senha passam a ser:
 - Mínimo 8 caracteres
 - Ao menos uma letra maiúscula
