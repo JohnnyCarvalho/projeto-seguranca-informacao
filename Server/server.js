@@ -4,6 +4,7 @@ const express = require("express");
 var bodyParser = require('body-parser');
 const cors = require('cors');
 var jsonParser = bodyParser.json()
+const config = require("../config.json");
 
 let app = express();
 app.use(function(req, res, next) {
@@ -11,10 +12,34 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   });
-app.listen(3030, () => console.log("App running o port 3030"));
 app.post("/register", jsonParser, (req, res) => { 
     let userName = req.body.name;
     let password = req.body.password;
+    if(config.securityActive){
+        if(!userName || userName.length < 5){
+            res.send({
+                success: false,
+                message: "Seu nome de usuário precisa ter ao menos 5 caracteres."
+            })
+        }
+        let passwordValidation = validateSecurePassword(password);
+        if(password.success == false){
+            res.send(passwordValidation);
+        }
+    } else {
+        if(!userName || userName.length != 4){
+            res.send({
+                success: false,
+                message: "Nome de usuário inválido."
+            })
+        }    
+        if(!validateInsecurePassword(password)){
+            res.send({
+                success: false,
+                message: "Senha inválida."
+            })
+        }
+    }
     let users = readJsonFile();
     if(users[userName]){
         res.send({
@@ -34,17 +59,16 @@ app.post("/register", jsonParser, (req, res) => {
     });
 });
 app.post("/login", jsonParser, (req, res) => {
-    let userName = req.body.name;
+    let userName = req.body.name;    
     let password = req.body.password;
     let users = readJsonFile();
     let userFound = users[userName];
-
     if(!userFound){        
         res.send({
             success:false,
             message: "Usuário não encontrado!"
         });
-    } else if(userFound.loginAttempts > 4 && new Date(userFound.lastLoginAttempt) > Date.now() - (60 * 1000)){
+    } else if(userFound.loginAttempts > 4 && new Date(userFound.lastLoginAttempt) > Date.now() - (60 * 1000) && config.securityActive){
         userFound.loginAttempts++;
         userFound.lastLoginAttempt = Date.now();
         res.send({
@@ -73,17 +97,57 @@ app.get("/status", (req, res) => {
 });
 
 function writeToJsonFile(data){
-    fs.writeFileSync("db.json", JSON.stringify(data));
+    fs.writeFileSync("./db.json", JSON.stringify(data));
 }
 
 function readJsonFile(){
-    return JSON.parse(fs.readFileSync("db.json"));
+    return JSON.parse(fs.readFileSync("./db.json"));
 }
 
 function md5(string){
     return crypto.createHash("md5").update(string).digest("hex");
 }
 
+function validateInsecurePassword(password){
+    return password && password.length == 4;
+}
 
-app.listen(3000, '127.0.0.1');
-console.log('Node server running on port 3000');
+function validateSecurePassword(password){
+    if (!password || password.length < 8) {
+        return {
+            success:false,
+            message:"Sua senha precisa ter no mínimo 8 caracteres."
+        };
+    }
+    if(password.search(/[a-z]/) == -1){
+        return {
+            success:false,
+            message:"Sua senha precisa ter no mínimo uma letra minúscula."
+        }
+    }
+    if(password.search(/[A-Z]/) == -1){
+        return {
+            success:false,
+            message:"Sua senha precisa ter no mínimo uma letra maiúscula."
+        }
+    }
+    if(password.search(/[0-9]/) == -1){
+        return {
+            success:false,
+            message:"Sua senha precisa ter no mínimo um número."
+        }
+    }
+    if(password.search(/[!@#$%^&*]/) == -1){
+        return {
+            success:false,
+            message:"Sua senha precisa ter no mínimo um caractere especial."
+        }
+    }
+    return {
+        success:true,
+        message:"Senha válida!"
+    }
+}
+
+app.listen(config.serverPort, '127.0.0.1');
+console.log('Node server running on port ' + config.serverPort);

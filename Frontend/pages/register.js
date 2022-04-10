@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { Container, Form, Button, Row, Col, Alert } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
+const config = require("../../config.json");
 
 export default function register(){
     const [name, setName] = useState();
@@ -14,7 +15,7 @@ export default function register(){
     }
     function fetchAPI(){
         let body = JSON.stringify({name, password});
-        fetch("http://localhost:3030/register", {
+        fetch(`http://localhost:${config.serverPort}/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

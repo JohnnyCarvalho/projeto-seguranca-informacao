@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { Container, Form, Button, Row, Col, Alert } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
+const config = require("../../config.json");
 
 export default function register(){
     const [name, setName] = useState();
@@ -14,7 +15,7 @@ export default function register(){
     }
     function fetchAPI(){
         let body = JSON.stringify({name, password});
-        fetch("http://localhost:3030/login", {
+        fetch(`http://localhost:${config.serverPort}/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -35,8 +36,8 @@ export default function register(){
             alignItems: "center",
             flex:1
         }}>
-            {error && <Alert variant="danger" onClose={() => setError(false)} dismissible>{error}</Alert>}
-            {message && <Alert variant="success" onClose={() => setMessage(false)} dismissible>{message}</Alert>}
+            {error && <Alert variant="danger" id="failMessage" onClose={() => setError(false)} dismissible>{error}</Alert>}
+            {message && <Alert variant="success" id="successMessage" onClose={() => setMessage(false)} dismissible>{message}</Alert>}
             <div className="d-flex align-items-center justify-content-center" style={{flexDirection:"row"}}>
                 <Row>
                     <Col>
@@ -55,7 +56,7 @@ export default function register(){
                                 </Button>
                             </Col>
                             <Col>                                
-                                <Button variant="outline-secondary" type="button" onClick={() => fetchAPI()}>
+                                <Button variant="outline-secondary" id="loginButton" type="button" onClick={() => fetchAPI()}>
                                     Login
                                 </Button>
                             </Col>

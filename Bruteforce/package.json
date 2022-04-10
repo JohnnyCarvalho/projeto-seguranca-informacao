@@ -1,0 +1,15 @@
+{
+  "name": "bruteforce",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bruteforce.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "puppeteer": "^13.5.2"
+  }
+}
