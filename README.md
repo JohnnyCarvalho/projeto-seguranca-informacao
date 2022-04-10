@@ -8,9 +8,9 @@ Para executar o projeto siga os seguintes passos:
 
 Em um terminal de comando acesse o diretório em que o projeto for clonado e:
 
-  cd Server
+  ```cd Server
   npm install
-  npm start
+  npm start```
 
 Caso o servidor node aponte erro de porta, basta acessar o arquivo ports.js no root do projeto e mudar a porta do servidor para uma porta disponível em seu ambiente.
 
